@@ -1,0 +1,8 @@
+numpy>=1.24
+opencv-python>=4.8
+pytesseract>=0.3.10
+requests>=2.31
+rapidfuzz>=3.0
+faster-whisper>=1.0     # speech recognition (local, offline after first model download)
+pytest>=7               # tests
+# optional AI summaries:  pip install anthropic

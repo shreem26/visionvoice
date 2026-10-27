@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VisionVoice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 7c4-2 8-2 12 1 4-3 8-3 12-1v18c-4-2-8-2-12 1-4-3-8-3-12-1z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M16 8v18" stroke="currentColor" stroke-width="2.2"/></svg>
+    <h1>VisionVoice</h1>
+  </div>
+  <ul class="devices" id="devices" aria-label="Connected parts">
+    <li data-dev="cam"><span class="dot"></span><span class="name">Camera</span><span class="val">…</span></li>
+    <li data-dev="mic"><span class="dot"></span><span class="name">Microphone</span><span class="val">…</span></li>
+    <li data-dev="stt"><span class="dot"></span><span class="name">Speech recognition</span><span class="val">…</span></li>
+    <li data-dev="ocr"><span class="dot"></span><span class="name">Text reader</span><span class="val">…</span></li>
+  </ul>
+</header>
+
+<main>
+  <section class="reading" aria-labelledby="reading-h">
+    <div class="reading-head">
+      <h2 id="reading-h">Reading</h2>
+      <p id="session-line" class="muted">No pages requested yet.</p>
+    </div>
+    <ol class="strip" id="strip" aria-label="Requested pages"></ol>
+    <form class="ask" id="cmd-form" autocomplete="off">
+      <label for="cmd" class="sr">Command</label>
+      <input id="cmd" name="cmd" placeholder="Type a command, e.g. read pages 12 to 14" maxlength="300">
+      <button type="submit">Send</button>
+    </form>
+    <div class="actions">
+      <button type="button" id="btn-capture" class="primary">Take photo</button>
+      <label class="upload">Use a photo<input type="file" id="upload" accept="image/jpeg,image/png,image/webp"></label>
+      <select id="samples" aria-label="Use a sample page" hidden><option value="">Sample page…</option></select>
+      <button type="button" id="btn-stop">Stop speaking</button>
+      <button type="button" data-cmd="repeat">Repeat</button>
+      <button type="button" data-cmd="cancel">Cancel reading</button>
+      <a id="aim" target="_blank" rel="noopener" hidden>Aim camera</a>
+    </div>
+    <p id="busy" class="busy" aria-live="polite"></p>
+  </section>
+
+  <section class="check" aria-labelledby="check-h">
+    <h2 id="check-h" class="sr">Latest page check</h2>
+    <figure class="photo">
+      <div class="photo-frame" id="photo-frame">
+        <img id="photo" alt="" hidden>
+        <p class="empty" id="photo-empty">Photos appear here with the page number the system found.</p>
+      </div>
+      <figcaption>
+        <div class="toggle" role="group" aria-label="Photo view">
+          <button type="button" data-view="annotated" aria-pressed="true">What it checked</button>
+          <button type="button" data-view="photo" aria-pressed="false">Photo</button>
+        </div>
+        <span id="photo-meta" class="muted"></span>
+      </figcaption>
+      <div class="gallery" id="gallery" aria-label="Earlier photos"></div>
+    </figure>
+    <div class="verdict" id="verdict" aria-live="polite">
+      <p class="v-state" id="v-state">Waiting for a photo</p>
+      <p class="v-message" id="v-message">Ask for a page, place it under the camera, then take a photo.</p>
+      <dl class="v-facts" id="v-facts"></dl>
+      <details id="v-text-wrap" hidden><summary>Text read aloud</summary><p id="v-text"></p></details>
+      <div id="v-cands"></div>
+    </div>
+  </section>
+
+  <section class="talk" aria-labelledby="talk-h">
+    <h2 id="talk-h">Conversation</h2>
+    <ol class="feed" id="feed" aria-live="polite"></ol>
+  </section>
+
+  <section class="summary" aria-labelledby="sum-h">
+    <h2 id="sum-h">Character and object summary</h2>
+    <form class="ask small" id="sum-form" autocomplete="off">
+      <label for="sum-target" class="sr">Who or what</label>
+      <input id="sum-target" placeholder="Who or what? e.g. Mira, the silver key">
+      <button type="submit">Summarize</button>
+    </form>
+    <div id="sum-body"><p class="muted">Summaries use only pages that passed the page check.</p></div>
+  </section>
+
+  <section class="history" aria-labelledby="hist-h">
+    <div class="hist-head">
+      <h2 id="hist-h">History</h2>
+      <p class="tally" id="tally"></p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Time</th><th>What</th><th>From</th><th>Detail</th><th>Expected</th><th>Found</th><th>Result</th><th>Reading time</th></tr></thead>
+        <tbody id="hist-body"><tr><td colspan="8" class="muted">Nothing yet.</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

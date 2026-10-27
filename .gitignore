@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+config.toml
+captures/
+hwtest_output/
+visionvoice.log
+firmware/*/build/

@@ -1,0 +1,51 @@
+# VisionVoice settings. Copy this file to config.toml and edit.
+# Everything here can be changed WITHOUT touching the hardware.
+
+[devices]
+cam = ""   # "" = find automatically. Or e.g. "http://192.168.43.50"
+mic = ""   # "" = find automatically. Or e.g. "192.168.43.51:5001"
+discovery_timeout = 2.0
+
+[camera]
+size = "UXGA"     # QVGA VGA SVGA XGA HD SXGA UXGA (UXGA = 1600x1200, best for reading)
+quality = 10      # 8-63, lower = sharper/bigger photo
+flash = 0         # 0 = off, up to 255 = flash LED brightness during the photo
+skip = 1          # frames thrown away so the photo is fresh
+rotate = 0        # rotate photos 0/90/180/270 degrees clockwise if the camera is mounted sideways
+controls = { vflip = 0, hmirror = 0 }   # also: brightness, contrast, saturation (-2..2), ...
+
+[mic]
+gain_shift = 14   # LOWER = louder (12 = 4x louder than 14). hwtest.py tells you if you need to change it
+channel = "L"     # "L" when the INMP441 L/R pin goes to GND
+max_ms = 15000    # longest recording
+preroll_ms = 250  # audio kept from just before the button press
+tap_ms = 400      # a press shorter than this = "capture" (no speaking needed)
+
+[ocr]
+tesseract_cmd = ""   # Windows: 'C:\Program Files\Tesseract-OCR\tesseract.exe'
+lang = "eng"
+band = 0.12          # top/bottom part of the photo searched for the page number
+min_conf = 60
+
+[session]
+max_range_pages = 30
+
+[stt]
+engine = "faster_whisper"   # or "none" for typed commands only
+model = "base.en"           # "small.en" = more accurate but slower
+device = "cpu"
+compute_type = "int8"
+
+[summary]
+provider = "extractive"     # "anthropic" = AI summary (needs ANTHROPIC_API_KEY + pip install anthropic)
+model = "claude-haiku-5-5"
+max_words = 60
+
+[tts]
+engine = "auto"   # auto | windows | say | espeak-ng | print
+rate = 0          # Windows: -10 (slow) .. 10 (fast)
+
+[debug]
+save_captures = true      # keeps photos and voice clips in ./captures for checking problems
+captures_dir = "captures"
+log_file = "visionvoice.log"
